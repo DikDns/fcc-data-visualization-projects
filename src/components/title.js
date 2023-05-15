@@ -1,8 +1,5 @@
-import app from "./app";
+function addTitle(d3Obj, element, text, id) {
+  return d3Obj.append(element).text(text).attr("id", id);
+}
 
-const title = app
-  .append("h1")
-  .text("Doping pada Balap Sepeda Profesional")
-  .attr("id", "title");
-
-export default title;
+export { addTitle };

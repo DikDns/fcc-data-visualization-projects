@@ -1,10 +1,9 @@
-import app from "./app";
+function addSvg(d3Obj, width, height) {
+  return d3Obj
+    .append("svg")
+    .attr("class", "graph")
+    .attr("width", width)
+    .attr("height", height);
+}
 
-const svg = app
-  .append("svg")
-  .attr("class", "graph")
-  .attr("width", "90vw")
-  .attr("height", 400)
-  .style("background-color", "salmon");
-
-export default svg;
+export { addSvg };

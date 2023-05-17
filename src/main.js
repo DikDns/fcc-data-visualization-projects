@@ -134,6 +134,7 @@ async function main() {
     .attr("x", svgWidth + 30)
     .attr("width", 18)
     .attr("height", 18)
+    .attr("class", "legend-rect")
     .style("fill", color);
 
   legend

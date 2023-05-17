@@ -41,6 +41,7 @@ async function main() {
   /**
    * SVG GRAPH
    */
+  const color = d3.scaleOrdinal(["#2563eb", "#ca8a04"]);
   const svgMargin = {
     top: 100,
     right: 20,
@@ -78,11 +79,7 @@ async function main() {
   const cy = (d) => yScale(d.Time) + svgMargin.top;
   setCircle(dot, 6, cx, cy);
 
-  setAttrCircle(
-    dot,
-    ["class", "dot"],
-    ["fill", (d) => (d.Doping !== "" ? "#2563eb" : "#ca8a04")]
-  );
+  setAttrCircle(dot, ["class", "dot"], ["fill", (d) => color(d.Doping !== "")]);
 
   // Set FCC User Story
   setAttrCircle(
@@ -93,6 +90,7 @@ async function main() {
 
   // Tooltip Hover
   const tooltip = addDiv(app, "tooltip", "tooltip");
+  tooltip.style("opacity", 0);
 
   dot
     .on("mouseover", (e, d) => {
@@ -104,9 +102,9 @@ async function main() {
           ": " +
           d.Nationality +
           "<br/>" +
-          "Year: " +
+          "Tahun: " +
           d.Year +
-          ", Time: " +
+          ", Waktu: " +
           timeFormat("%M:%S")(d.Time) +
           (d.Doping ? "<br/><br/>" + d.Doping : "")
       );
@@ -114,6 +112,40 @@ async function main() {
     .on("mouseout", (e, d) => {
       tooltip.style("opacity", 0);
     });
+
+  /**
+   * LEGEND
+   */
+  const legendContainer = svg.append("g").attr("id", "legend");
+
+  const legend = legendContainer
+    .selectAll("#legend")
+    .data(color.domain())
+    .enter()
+    .append("g")
+    .attr("class", "legend-label")
+    .attr(
+      "transform",
+      (_, i) => "translate(0," + (svgHeight / 2 - i * 30) + ")"
+    );
+
+  legend
+    .append("rect")
+    .attr("x", svgWidth + 30)
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", color);
+
+  legend
+    .append("text")
+    .attr("x", svgWidth + 25)
+    .attr("y", 9)
+    .attr("dy", ".35em")
+    .attr("class", "legend-label")
+    .style("text-anchor", "end")
+    .text((d) =>
+      d ? "Pesepeda dengan tuduhan doping" : "Tidak ada tuduhan doping"
+    );
 }
 
 try {

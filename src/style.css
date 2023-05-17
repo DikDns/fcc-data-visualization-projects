@@ -55,8 +55,13 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.dot {
+.dot,
+.legend-rect {
   stroke: #eff6ff;
+}
+
+.legend-label {
+  fill: rgba(255, 255, 255, 0.87);
 }
 
 #app {
@@ -107,7 +112,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 
-  .dot {
+  .dot,
+  .legend-rect {
     stroke: #172554;
   }
 
@@ -120,7 +126,8 @@ button:focus-visible {
     pointer-events: none;
   }
 
-  #yText {
+  #yText,
+  .legend-label {
     fill: #213547;
   }
 }

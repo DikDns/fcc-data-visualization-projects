@@ -99,4 +99,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+
+  .dot {
+    stroke: #172554;
+  }
+
+  #tooltip {
+    color: #213547;
+    background: #eff6ff;
+    box-shadow: 1px 1px 5px 0px #eff6ff;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
 }

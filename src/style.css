@@ -55,6 +55,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.dot {
+  stroke: #eff6ff;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -73,13 +77,14 @@ button:focus-visible {
 
 #tooltip {
   position: absolute;
-
   text-align: left;
   padding: 10px;
   font: 12px sans-serif;
-  background: lightsteelblue;
+  color: #eff6ff;
+  background: #172554;
+  box-shadow: 1px 1px 5px 0px #172554;
   border: 0px;
-  border-radius: 8px;
+  border-radius: 4px;
   pointer-events: none;
 }
 

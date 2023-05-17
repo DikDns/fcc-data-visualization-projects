@@ -36,12 +36,6 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -61,6 +55,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 #title {
   font-size: 2em;
   margin: 0 0 10px;
@@ -69,6 +69,18 @@ button:focus-visible {
 #subtitle {
   font-size: 1.5em;
   margin: 0 0 20px;
+}
+
+#tooltip {
+  position: absolute;
+
+  text-align: left;
+  padding: 10px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
 }
 
 @media (prefers-color-scheme: light) {

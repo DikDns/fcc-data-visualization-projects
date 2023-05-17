@@ -35,4 +35,4 @@ function addAxis(d3Obj, axis, offsetX = 0, offsetY = 0) {
     .attr("transform", `translate(${offsetX}, ${offsetY})`);
 }
 
-export { createAxis, addAxis };
+export { createAxis, addAxis, timeFormat };

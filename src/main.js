@@ -56,6 +56,8 @@ async function main() {
   );
   svg.attr("transform", `translate(${0}, ${-svgMargin.top})`);
 
+  const yText = addText(svg, "text", "Waktu dalam Menit", "yText");
+
   /**
    * SCALE
    */
@@ -96,6 +98,7 @@ async function main() {
     .on("mouseover", (e, d) => {
       tooltip.style("opacity", 0.75);
       tooltip.style("left", e.pageX + "px").style("top", e.pageY - 28 + "px");
+      tooltip.attr("data-year", d.Year);
       tooltip.html(
         d.Name +
           ": " +

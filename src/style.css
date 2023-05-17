@@ -119,4 +119,8 @@ button:focus-visible {
     border-radius: 4px;
     pointer-events: none;
   }
+
+  #yText {
+    fill: #213547;
+  }
 }

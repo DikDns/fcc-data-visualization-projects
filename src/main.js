@@ -13,32 +13,32 @@ async function main() {
    * DATASET
    */
   const dataset = await getGlobalTemperature();
-
+  const { monthlyVariance } = dataset;
   console.log(dataset);
 
-  // const xMin = min(dataset, (d) => d.Year - 1);
-  // const xMax = max(dataset, (d) => d.Year + 1);
-  // const yMin = min(dataset, (d) => d.Time);
-  // const yMax = max(dataset, (d) => d.Time);
+  const xMin = min(monthlyVariance, (d) => d.year - 1);
+  const xMax = max(monthlyVariance, (d) => d.year + 1);
+  const yMin = min(monthlyVariance, (d) => d.month);
+  const yMax = max(monthlyVariance, (d) => d.month);
 
   // /**
   //  * INITIAL SELECTION
   //  */
-  // const app = select("#app");
+  const app = select("#app");
 
-  // const title = addText(
-  //   app,
-  //   "h1",
-  //   "Doping pada Balap Sepeda Profesional",
-  //   "title"
-  // );
+  const title = addText(
+    app,
+    "h1",
+    "Suhu Permukaan Tanah Global Bulanan",
+    "title"
+  );
 
-  // const subtitle = addText(
-  //   app,
-  //   "h2",
-  //   "35 Pesepeda tercepat di Alpe d'Huez",
-  //   "subtitle"
-  // );
+  const description = addText(
+    app,
+    "h2",
+    "1753 - 2015: suhu dasar 8,66℃",
+    "description"
+  );
 
   // /**
   //  * SVG GRAPH

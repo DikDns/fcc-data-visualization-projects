@@ -38,9 +38,9 @@ async function main() {
   const yMin = min(monthlyVariance, (d) => d.month);
   const yMax = max(monthlyVariance, (d) => d.month);
 
-  // /**
-  //  * INITIAL SELECTION
-  //  */
+  /**
+   * INITIAL SELECTION
+   */
   const app = select("#app");
 
   const title = addText(
@@ -57,41 +57,34 @@ async function main() {
     "description"
   );
 
-  // /**
-  //  * SVG GRAPH
-  //  */
-  // const color = scaleOrdinal(["#2563eb", "#ca8a04"]);
-  // const svgMargin = {
-  //   top: 100,
-  //   right: 20,
-  //   bottom: 30,
-  //   left: 60,
-  // };
-  // const svgWidth = 920 - svgMargin.left - svgMargin.right;
-  // const svgHeight = 630 - svgMargin.top - svgMargin.bottom;
-  // const svg = addSvg(
-  //   app,
-  //   svgWidth + svgMargin.left + svgMargin.right,
-  //   svgHeight + svgMargin.top + svgMargin.bottom
-  // );
-  // svg.attr("transform", `translate(${0}, ${-svgMargin.top})`);
+  /**
+   * SVG GRAPH
+   */
+  const svgMargin = {
+    y: 30,
+    x: 40,
+  };
+  const svgWidth =
+    5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x + svgMargin.x;
+  const svgHeight = svgMargin.y * 14;
+  const svg = addSvg(app, svgWidth, svgHeight);
 
-  // const yText = addText(svg, "text", "Waktu dalam Menit", "yText");
+  /**
+   * SCALE
+   */
+  const xScale = linearScale(xMin, xMax, 0, svgWidth);
+  const xAxis = createAxis("x", xScale, "d");
+  addAxis(svg, xAxis, svgMargin.x, svgHeight - svgMargin.y);
 
-  // /**
-  //  * SCALE
-  //  */
-  // const xScale = linearScale(xMin, xMax, 0, svgWidth);
-  // const xAxis = createAxis("x", xScale, "d");
-  // addAxis(svg, xAxis, svgMargin.left, svgHeight + svgMargin.top);
+  // const yScale = linearScale(yMin, yMax, 0, svgHeight);
+  // const yAxis = createAxis("y", yScale, "d");
+  // addAxis(svg, yAxis, svgMargin.x, svgMargin.y);
+  // // Add Y Axis label
+  // addText(svg, "text", "Bulan", "yText");
 
-  // const yScale = timeScale(yMin, yMax, 0, svgHeight);
-  // const yAxis = createAxis("y", yScale, "time");
-  // addAxis(svg, yAxis, svgMargin.left, svgMargin.top);
-
-  // /**
-  //  * CIRCLE
-  //  */
+  /**
+   * CIRCLE
+   */
   // const dot = addCircle(svg, dataset, ".dot");
 
   // const cx = (d) => xScale(d.Year) + svgMargin.left;
@@ -132,9 +125,9 @@ async function main() {
   //     tooltip.style("opacity", 0);
   //   });
 
-  // /**
-  //  * LEGEND
-  //  */
+  /**
+   * LEGEND
+   */
   // const legendContainer = svg.append("g").attr("id", "legend");
 
   // const legend = legendContainer

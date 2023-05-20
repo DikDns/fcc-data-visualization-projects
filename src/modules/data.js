@@ -1,12 +1,8 @@
 import { getFetch } from "./fetch.js";
+import { round } from "./utils.js";
 
 const globalTemperatureUrl =
   "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
-
-function round(x, nth = 1) {
-  if (nth < 1) return 0;
-  return Math.round(x * nth) / nth;
-}
 
 export async function getGlobalTemperature() {
   const data = await getFetch(globalTemperatureUrl);

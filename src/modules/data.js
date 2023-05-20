@@ -11,7 +11,8 @@ export async function getGlobalTemperature() {
     monthlyVariance: data.monthlyVariance.map((d) => ({
       ...d,
       month: --d.month,
-      temperature: data.baseTemperature + d.variance,
+      // Round to tenth decimal places (a.bcde => a.x)
+      temperature: Math.round((data.baseTemperature + d.variance) * 10) / 10,
     })),
   };
 }

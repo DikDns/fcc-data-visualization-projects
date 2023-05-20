@@ -1,4 +1,5 @@
-import { axisBottom, axisLeft, format, timeFormat } from "d3";
+import { axisBottom, axisLeft, format, timeFormat, utcFormat } from "d3";
+import { formatMonth } from "../modules/utils";
 
 function createAxis(type, scale, tickFormat) {
   let axis;
@@ -22,6 +23,10 @@ function createAxis(type, scale, tickFormat) {
       break;
     case "time":
       axis.tickFormat(timeFormat("%M:%S"));
+      break;
+    case "month":
+      axis.tickFormat((month) => formatMonth(month));
+      break;
   }
 
   return axis;

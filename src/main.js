@@ -1,6 +1,6 @@
 import "./style.css";
 import { min, max, select, scaleOrdinal } from "d3";
-import { getCyclist } from "./modules/cyclist";
+import { getGlobalTemperature } from "./modules/data";
 import { linearScale, timeScale } from "./modules/scale";
 import { addSvg } from "./components/svg";
 import { addText } from "./components/text";
@@ -12,141 +12,143 @@ async function main() {
   /**
    * DATASET
    */
-  const dataset = await getCyclist();
+  const dataset = await getGlobalTemperature();
 
-  const xMin = min(dataset, (d) => d.Year - 1);
-  const xMax = max(dataset, (d) => d.Year + 1);
-  const yMin = min(dataset, (d) => d.Time);
-  const yMax = max(dataset, (d) => d.Time);
+  console.log(dataset);
 
-  /**
-   * INITIAL SELECTION
-   */
-  const app = select("#app");
+  // const xMin = min(dataset, (d) => d.Year - 1);
+  // const xMax = max(dataset, (d) => d.Year + 1);
+  // const yMin = min(dataset, (d) => d.Time);
+  // const yMax = max(dataset, (d) => d.Time);
 
-  const title = addText(
-    app,
-    "h1",
-    "Doping pada Balap Sepeda Profesional",
-    "title"
-  );
+  // /**
+  //  * INITIAL SELECTION
+  //  */
+  // const app = select("#app");
 
-  const subtitle = addText(
-    app,
-    "h2",
-    "35 Pesepeda tercepat di Alpe d'Huez",
-    "subtitle"
-  );
+  // const title = addText(
+  //   app,
+  //   "h1",
+  //   "Doping pada Balap Sepeda Profesional",
+  //   "title"
+  // );
 
-  /**
-   * SVG GRAPH
-   */
-  const color = scaleOrdinal(["#2563eb", "#ca8a04"]);
-  const svgMargin = {
-    top: 100,
-    right: 20,
-    bottom: 30,
-    left: 60,
-  };
-  const svgWidth = 920 - svgMargin.left - svgMargin.right;
-  const svgHeight = 630 - svgMargin.top - svgMargin.bottom;
-  const svg = addSvg(
-    app,
-    svgWidth + svgMargin.left + svgMargin.right,
-    svgHeight + svgMargin.top + svgMargin.bottom
-  );
-  svg.attr("transform", `translate(${0}, ${-svgMargin.top})`);
+  // const subtitle = addText(
+  //   app,
+  //   "h2",
+  //   "35 Pesepeda tercepat di Alpe d'Huez",
+  //   "subtitle"
+  // );
 
-  const yText = addText(svg, "text", "Waktu dalam Menit", "yText");
+  // /**
+  //  * SVG GRAPH
+  //  */
+  // const color = scaleOrdinal(["#2563eb", "#ca8a04"]);
+  // const svgMargin = {
+  //   top: 100,
+  //   right: 20,
+  //   bottom: 30,
+  //   left: 60,
+  // };
+  // const svgWidth = 920 - svgMargin.left - svgMargin.right;
+  // const svgHeight = 630 - svgMargin.top - svgMargin.bottom;
+  // const svg = addSvg(
+  //   app,
+  //   svgWidth + svgMargin.left + svgMargin.right,
+  //   svgHeight + svgMargin.top + svgMargin.bottom
+  // );
+  // svg.attr("transform", `translate(${0}, ${-svgMargin.top})`);
 
-  /**
-   * SCALE
-   */
-  const xScale = linearScale(xMin, xMax, 0, svgWidth);
-  const xAxis = createAxis("x", xScale, "d");
-  addAxis(svg, xAxis, svgMargin.left, svgHeight + svgMargin.top);
+  // const yText = addText(svg, "text", "Waktu dalam Menit", "yText");
 
-  const yScale = timeScale(yMin, yMax, 0, svgHeight);
-  const yAxis = createAxis("y", yScale, "time");
-  addAxis(svg, yAxis, svgMargin.left, svgMargin.top);
+  // /**
+  //  * SCALE
+  //  */
+  // const xScale = linearScale(xMin, xMax, 0, svgWidth);
+  // const xAxis = createAxis("x", xScale, "d");
+  // addAxis(svg, xAxis, svgMargin.left, svgHeight + svgMargin.top);
 
-  /**
-   * CIRCLE
-   */
-  const dot = addCircle(svg, dataset, ".dot");
+  // const yScale = timeScale(yMin, yMax, 0, svgHeight);
+  // const yAxis = createAxis("y", yScale, "time");
+  // addAxis(svg, yAxis, svgMargin.left, svgMargin.top);
 
-  const cx = (d) => xScale(d.Year) + svgMargin.left;
-  const cy = (d) => yScale(d.Time) + svgMargin.top;
-  setCircle(dot, 6, cx, cy);
+  // /**
+  //  * CIRCLE
+  //  */
+  // const dot = addCircle(svg, dataset, ".dot");
 
-  setAttrCircle(dot, ["class", "dot"], ["fill", (d) => color(d.Doping !== "")]);
+  // const cx = (d) => xScale(d.Year) + svgMargin.left;
+  // const cy = (d) => yScale(d.Time) + svgMargin.top;
+  // setCircle(dot, 6, cx, cy);
 
-  // Set FCC User Story
-  setAttrCircle(
-    dot,
-    ["data-xvalue", (d) => d.Year],
-    ["data-yvalue", (d) => d.Time.toISOString()]
-  );
+  // setAttrCircle(dot, ["class", "dot"], ["fill", (d) => color(d.Doping !== "")]);
 
-  // Tooltip Hover
-  const tooltip = addDiv(app, "tooltip", "tooltip");
-  tooltip.style("opacity", 0);
+  // // Set FCC User Story
+  // setAttrCircle(
+  //   dot,
+  //   ["data-xvalue", (d) => d.Year],
+  //   ["data-yvalue", (d) => d.Time.toISOString()]
+  // );
 
-  dot
-    .on("mouseover", (e, d) => {
-      tooltip.style("opacity", 0.75);
-      tooltip.style("left", e.pageX + "px").style("top", e.pageY - 28 + "px");
-      tooltip.attr("data-year", d.Year);
-      tooltip.html(
-        d.Name +
-          ": " +
-          d.Nationality +
-          "<br/>" +
-          "Tahun: " +
-          d.Year +
-          ", Waktu: " +
-          timeFormat("%M:%S")(d.Time) +
-          (d.Doping ? "<br/><br/>" + d.Doping : "")
-      );
-    })
-    .on("mouseout", (e, d) => {
-      tooltip.style("opacity", 0);
-    });
+  // // Tooltip Hover
+  // const tooltip = addDiv(app, "tooltip", "tooltip");
+  // tooltip.style("opacity", 0);
 
-  /**
-   * LEGEND
-   */
-  const legendContainer = svg.append("g").attr("id", "legend");
+  // dot
+  //   .on("mouseover", (e, d) => {
+  //     tooltip.style("opacity", 0.75);
+  //     tooltip.style("left", e.pageX + "px").style("top", e.pageY - 28 + "px");
+  //     tooltip.attr("data-year", d.Year);
+  //     tooltip.html(
+  //       d.Name +
+  //         ": " +
+  //         d.Nationality +
+  //         "<br/>" +
+  //         "Tahun: " +
+  //         d.Year +
+  //         ", Waktu: " +
+  //         timeFormat("%M:%S")(d.Time) +
+  //         (d.Doping ? "<br/><br/>" + d.Doping : "")
+  //     );
+  //   })
+  //   .on("mouseout", (e, d) => {
+  //     tooltip.style("opacity", 0);
+  //   });
 
-  const legend = legendContainer
-    .selectAll("#legend")
-    .data(color.domain())
-    .enter()
-    .append("g")
-    .attr("class", "legend-label")
-    .attr(
-      "transform",
-      (_, i) => "translate(0," + (svgHeight / 2 - i * 30) + ")"
-    );
+  // /**
+  //  * LEGEND
+  //  */
+  // const legendContainer = svg.append("g").attr("id", "legend");
 
-  legend
-    .append("rect")
-    .attr("x", svgWidth + 30)
-    .attr("width", 18)
-    .attr("height", 18)
-    .attr("class", "legend-rect")
-    .style("fill", color);
+  // const legend = legendContainer
+  //   .selectAll("#legend")
+  //   .data(color.domain())
+  //   .enter()
+  //   .append("g")
+  //   .attr("class", "legend-label")
+  //   .attr(
+  //     "transform",
+  //     (_, i) => "translate(0," + (svgHeight / 2 - i * 30) + ")"
+  //   );
 
-  legend
-    .append("text")
-    .attr("x", svgWidth + 25)
-    .attr("y", 9)
-    .attr("dy", ".35em")
-    .attr("class", "legend-label")
-    .style("text-anchor", "end")
-    .text((d) =>
-      d ? "Pesepeda dengan tuduhan doping" : "Tidak ada tuduhan doping"
-    );
+  // legend
+  //   .append("rect")
+  //   .attr("x", svgWidth + 30)
+  //   .attr("width", 18)
+  //   .attr("height", 18)
+  //   .attr("class", "legend-rect")
+  //   .style("fill", color);
+
+  // legend
+  //   .append("text")
+  //   .attr("x", svgWidth + 25)
+  //   .attr("y", 9)
+  //   .attr("dy", ".35em")
+  //   .attr("class", "legend-label")
+  //   .style("text-anchor", "end")
+  //   .text((d) =>
+  //     d ? "Pesepeda dengan tuduhan doping" : "Tidak ada tuduhan doping"
+  //   );
 }
 
 try {

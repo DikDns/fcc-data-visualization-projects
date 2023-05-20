@@ -1,5 +1,5 @@
 import "./style.css";
-import { min, max, select, scaleOrdinal } from "d3";
+import { min, max, select } from "d3";
 import { getGlobalTemperature } from "./modules/data";
 import { linearScale, timeScale } from "./modules/scale";
 import { addSvg } from "./components/svg";
@@ -62,25 +62,24 @@ async function main() {
    */
   const svgMargin = {
     y: 30,
-    x: 40,
+    x: 80,
   };
-  const svgWidth =
-    5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x + svgMargin.x;
+  const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
   const svgHeight = svgMargin.y * 14;
   const svg = addSvg(app, svgWidth, svgHeight);
 
   /**
    * SCALE
    */
-  const xScale = linearScale(xMin, xMax, 0, svgWidth);
+  const xScale = linearScale(xMin, xMax, 0, svgWidth - svgMargin.x * 2);
   const xAxis = createAxis("x", xScale, "d");
   addAxis(svg, xAxis, svgMargin.x, svgHeight - svgMargin.y);
 
-  // const yScale = linearScale(yMin, yMax, 0, svgHeight);
-  // const yAxis = createAxis("y", yScale, "d");
-  // addAxis(svg, yAxis, svgMargin.x, svgMargin.y);
-  // // Add Y Axis label
-  // addText(svg, "text", "Bulan", "yText");
+  const yScale = linearScale(yMin, yMax, 0, svgHeight - svgMargin.y * 2);
+  const yAxis = createAxis("y", yScale, "month");
+  addAxis(svg, yAxis, svgMargin.x, svgMargin.y);
+  // Add Y Axis label
+  addText(svg, "text", "Bulan", "yText");
 
   /**
    * CIRCLE

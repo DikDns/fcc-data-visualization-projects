@@ -10,6 +10,23 @@ import { addCircle, setCircle, setAttrCircle } from "./components/circle";
 
 async function main() {
   /**
+   * COLOR
+   */
+  const color = [
+    "#4C0519",
+    "#9F1239",
+    "#E11D48",
+    "#FB7185",
+    "#D97706",
+    "#FBBF24",
+    "#FDE68A",
+    "#818CF8",
+    "#4F46E5",
+    "#3730A3",
+    "#1E1B4B",
+  ];
+
+  /**
    * DATASET
    */
   const dataset = await getGlobalTemperature();

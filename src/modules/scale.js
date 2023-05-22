@@ -1,16 +1,20 @@
-import { scaleLinear, scaleTime, scaleThreshold } from "d3";
+import { scaleLinear, scaleTime, scaleThreshold, scaleBand } from "d3";
 
-function timeScale(minDomain, maxDomain, minRange, maxRange) {
+export function bandScale(domain, minRange, maxRange) {
+  return scaleBand().domain(domain).rangeRound([minRange, maxRange]).padding(0);
+}
+
+export function timeScale(minDomain, maxDomain, minRange, maxRange) {
   return scaleTime().domain([minDomain, maxDomain]).range([minRange, maxRange]);
 }
 
-function linearScale(minDomain, maxDomain, minRange, maxRange) {
+export function linearScale(minDomain, maxDomain, minRange, maxRange) {
   return scaleLinear()
     .domain([minDomain, maxDomain])
     .range([minRange, maxRange]);
 }
 
-function thresholdScale(minDomain, maxDomain, inputRange) {
+export function thresholdScale(minDomain, maxDomain, inputRange) {
   const domainArr = [];
   const count = inputRange.length;
   const step = (maxDomain - minDomain) / count;
@@ -21,5 +25,3 @@ function thresholdScale(minDomain, maxDomain, inputRange) {
 
   return scaleThreshold().domain(domainArr).range(inputRange);
 }
-
-export { timeScale, linearScale, thresholdScale };

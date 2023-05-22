@@ -75,6 +75,10 @@ button:focus-visible {
   overflow: auto;
 }
 
+.cell:hover {
+  stroke: black;
+}
+
 #legend {
   transform: translate(80px, 430px);
 }

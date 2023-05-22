@@ -57,7 +57,7 @@ button:focus-visible {
 
 #app {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 20px auto 100px;
   text-align: center;
 }
 
@@ -69,6 +69,10 @@ button:focus-visible {
 #subtitle {
   font-size: 1.5em;
   margin: 0 0 20px;
+}
+
+#graph-container {
+  overflow: auto;
 }
 
 #legend {
@@ -89,12 +93,13 @@ button:focus-visible {
 #tooltip {
   position: absolute;
   text-align: left;
-  padding: 10px;
+  padding: 5px;
   font: 12px sans-serif;
   color: #eff6ff;
-  background: #172554;
+  background: #172554dd;
   box-shadow: 1px 1px 5px 0px #172554;
   border: 0px;
   border-radius: 4px;
   pointer-events: none;
+  min-width: 100px;
 }

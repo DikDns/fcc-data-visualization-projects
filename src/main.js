@@ -53,9 +53,8 @@ async function main() {
   };
   const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
   const svgHeight = svgMargin.y * 16;
-  const svg = addSvg(app, svgWidth, svgHeight);
-
-  console.log(svgWidth);
+  const svgWrapper = addDiv(app, "graph-container");
+  const svg = addSvg(svgWrapper, svgWidth, svgHeight);
 
   /**
    * SCALE
@@ -133,7 +132,7 @@ async function main() {
     .attr("data-temp", (d) => d.temperature);
 
   // tooltip Mouse Hover
-  const tooltip = addDiv(app, "tooltip");
+  const tooltip = addDiv(svgWrapper, "tooltip");
   tooltip.style("opacity", 0);
 
   heatMap

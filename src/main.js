@@ -1,8 +1,10 @@
 import "./style.css";
-import { min, max, select } from "d3";
+import { min, max, select, format } from "d3";
 import { getGlobalTemperature } from "./modules/data";
 import { bandScale, linearScale, thresholdScale } from "./modules/scale";
+import { formatMonth } from "./modules/utils";
 import { addSvg } from "./components/svg";
+import { addDiv } from "./components/div";
 import { addText } from "./components/text";
 import { addAxis, createAxis } from "./components/axis";
 import { addLegend, setDataLegend } from "./components/legend";
@@ -31,10 +33,7 @@ async function main() {
    */
   const dataset = await getGlobalTemperature();
   const { monthlyVariance } = dataset;
-  console.log(dataset);
 
-  const xMin = min(monthlyVariance, (d) => d.year - 1);
-  const xMax = max(monthlyVariance, (d) => d.year + 1);
   const years = monthlyVariance.map((val) => val.year);
   const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
@@ -42,20 +41,8 @@ async function main() {
    * INITIAL SELECTION
    */
   const app = select("#app");
-
-  const title = addText(
-    app,
-    "h1",
-    "Suhu Permukaan Tanah Global Bulanan",
-    "title"
-  );
-
-  const description = addText(
-    app,
-    "h2",
-    "1753 - 2015: suhu dasar 8,66℃",
-    "description"
-  );
+  addText(app, "h1", "Suhu Permukaan Tanah Global Bulanan", "title");
+  addText(app, "h2", "1753 - 2015: suhu dasar 8,66℃", "description");
 
   /**
    * SVG GRAPH
@@ -145,26 +132,33 @@ async function main() {
     .attr("data-year", (d) => d.year)
     .attr("data-temp", (d) => d.temperature);
 
-  // dot
-  //   .on("mouseover", (e, d) => {
-  //     tooltip.style("opacity", 0.75);
-  //     tooltip.style("left", e.pageX + "px").style("top", e.pageY - 28 + "px");
-  //     tooltip.attr("data-year", d.Year);
-  //     tooltip.html(
-  //       d.Name +
-  //         ": " +
-  //         d.Nationality +
-  //         "<br/>" +
-  //         "Tahun: " +
-  //         d.Year +
-  //         ", Waktu: " +
-  //         timeFormat("%M:%S")(d.Time) +
-  //         (d.Doping ? "<br/><br/>" + d.Doping : "")
-  //     );
-  //   })
-  //   .on("mouseout", (e, d) => {
-  //     tooltip.style("opacity", 0);
-  //   });
+  // tooltip Mouse Hover
+  const tooltip = addDiv(app, "tooltip");
+  tooltip.style("opacity", 0);
+
+  heatMap
+    .on("mouseover", (e, d) => {
+      const innerHtml = `
+        <span class="date">
+          ${d.year} - ${formatMonth(d.month)}
+        </span>
+        <br />
+        <span class="temperature">
+          ${format(".1f")(d.temperature)}&#8451;
+        </span>
+        <br />
+        <span class="variance">
+          ${format("+.1f")(d.variance)}&#8451;
+        </span>
+      `;
+      tooltip.html(innerHtml);
+      tooltip.style("opacity", 1);
+      tooltip.style("left", e.pageX + "px").style("top", e.pageY - 75 + "px");
+      tooltip.attr("data-year", d.year);
+    })
+    .on("mouseout", (e, d) => {
+      tooltip.style("opacity", 0);
+    });
 }
 
 try {

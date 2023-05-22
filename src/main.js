@@ -121,9 +121,15 @@ async function main() {
       const fixedWidth = legendXScale(d[1]) - legendXScale(d[0]);
       return d[0] && d[1] ? fixedWidth : legendXScale(null);
     })
-    .attr("height", legendHeight);
+    .attr("height", legendHeight)
+    .attr("class", "legend-label");
 
+  /**
+   * LEGEND X AXIS
+   */
   const legendXAxis = createAxis("x", legendXScale, ".1f");
+  legendXAxis.tickValues(legendThreshold.domain());
+  addAxis(legendContainer, legendXAxis, 0, legendHeight);
 
   // legend
   //   .append("rect")

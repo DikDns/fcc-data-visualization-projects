@@ -63,7 +63,7 @@ async function main() {
     y: 30,
     x: 100,
   };
-  const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12);
+  const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
   const svgHeight = svgMargin.y * 16;
   const svg = addSvg(app, svgWidth, svgHeight);
 
@@ -73,7 +73,7 @@ async function main() {
    * SCALE
    */
   const scaleMargin = {
-    top: svgMargin.y,
+    top: svgMargin.y * 2,
     x: svgMargin.x,
     bottom: svgHeight - svgMargin.y * 4,
   };
@@ -131,31 +131,34 @@ async function main() {
   /**
    * HEAT MAP
    */
-  // svg
-  //   .append("g")
-  //   .classed("map", true)
-  //   .attr("transform", "translate(" + 0 + "," + 0 + ")")
-  //   .selectAll("rect")
-  //   .data(monthlyVariance)
-  //   .enter()
-  //   .append("rect")
-  //   .attr("class", "cell")
-  //   .attr("data-month", function (d) {
-  //     return d.month;
-  //   })
-  //   .attr("data-year", function (d) {
-  //     return d.year;
-  //   })
-  //   .attr("data-temp", function (d) {
-  //     return d.temperature;
-  //   })
-  //   .attr("x", (d) => xScale(d.year))
-  //   .attr("y", (d) => yScale(d.month))
-  //   .attr("width", (d) => xScale.bandwidth(d.year))
-  //   .attr("height", (d) => yScale.bandwidth(d.month))
-  //   .attr("fill", function (d) {
-  //     return legendThreshold(d.temperature);
-  //   });
+  svg
+    .append("g")
+    .classed("map", true)
+    .attr(
+      "transform",
+      "translate(" + scaleMargin.x + "," + scaleMargin.top + ")"
+    )
+    .selectAll("rect")
+    .data(monthlyVariance)
+    .enter()
+    .append("rect")
+    .attr("class", "cell")
+    .attr("data-month", function (d) {
+      return d.month;
+    })
+    .attr("data-year", function (d) {
+      return d.year;
+    })
+    .attr("data-temp", function (d) {
+      return d.temperature;
+    })
+    .attr("x", (d) => xScale(d.year))
+    .attr("y", (d) => yScale(d.month))
+    .attr("width", (d) => xScale.bandwidth(d.year))
+    .attr("height", (d) => yScale.bandwidth(d.month))
+    .attr("fill", function (d) {
+      return legendThreshold(d.temperature);
+    });
 
   // const dot = addCircle(svg, dataset, ".dot");
 

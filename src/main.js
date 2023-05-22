@@ -110,25 +110,6 @@ async function main() {
   legendXAxis.tickValues(legendThreshold.domain());
   addAxis(legend, legendXAxis, 0, legendHeight);
 
-  // legend
-  //   .append("rect")
-  //   .attr("x", svgWidth + 30)
-  //   .attr("width", 18)
-  //   .attr("height", 18)
-  //   .attr("class", "legend-rect")
-  //   .style("fill", color);
-
-  // legend
-  //   .append("text")
-  //   .attr("x", svgWidth + 25)
-  //   .attr("y", 9)
-  //   .attr("dy", ".35em")
-  //   .attr("class", "legend-label")
-  //   .style("text-anchor", "end")
-  //   .text((d) =>
-  //     d ? "Pesepeda dengan tuduhan doping" : "Tidak ada tuduhan doping"
-  //   );
-
   /**
    * CIRCLE
    */

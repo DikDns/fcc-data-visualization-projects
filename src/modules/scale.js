@@ -13,7 +13,7 @@ function linearScale(minDomain, maxDomain, minRange, maxRange) {
 function thresholdScale(minDomain, maxDomain, inputRange) {
   const domainArr = [];
   const count = inputRange.length;
-  const step = (minDomain - maxDomain) / count;
+  const step = (maxDomain - minDomain) / count;
 
   for (let i = 1; i < count; i++) {
     domainArr.push(minDomain + i * step);

@@ -72,7 +72,7 @@ button:focus-visible {
 }
 
 #legend {
-  transform: translate(20px, 400px);
+  transform: translate(80px, 430px);
 }
 
 .legend-label {
@@ -83,7 +83,7 @@ button:focus-visible {
   fill: rgba(255, 255, 255, 0.87);
   font-size: 20px;
   font-family: inherit;
-  transform: translate(15px, 400px) rotate(-90deg);
+  transform: translate(30px, 210px) rotate(-90deg);
 }
 
 #tooltip {

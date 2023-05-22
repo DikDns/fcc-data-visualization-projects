@@ -6,6 +6,7 @@ import { addSvg } from "./components/svg";
 import { addText } from "./components/text";
 import { addAxis, createAxis } from "./components/axis";
 import { addLegend, setDataLegend } from "./components/legend";
+import { addHeatMap } from "./components/heatMap";
 
 async function main() {
   /**
@@ -131,53 +132,18 @@ async function main() {
   /**
    * HEAT MAP
    */
-  svg
-    .append("g")
-    .classed("map", true)
-    .attr(
-      "transform",
-      "translate(" + scaleMargin.x + "," + scaleMargin.top + ")"
-    )
-    .selectAll("rect")
-    .data(monthlyVariance)
-    .enter()
-    .append("rect")
+
+  const heatMap = addHeatMap(svg, monthlyVariance, scaleMargin);
+
+  // Set Heatmap area and position
+  heatMap.set(xScale, yScale, legendThreshold);
+
+  // FCC USER STORY
+  heatMap
     .attr("class", "cell")
-    .attr("data-month", function (d) {
-      return d.month;
-    })
-    .attr("data-year", function (d) {
-      return d.year;
-    })
-    .attr("data-temp", function (d) {
-      return d.temperature;
-    })
-    .attr("x", (d) => xScale(d.year))
-    .attr("y", (d) => yScale(d.month))
-    .attr("width", (d) => xScale.bandwidth(d.year))
-    .attr("height", (d) => yScale.bandwidth(d.month))
-    .attr("fill", function (d) {
-      return legendThreshold(d.temperature);
-    });
-
-  // const dot = addCircle(svg, dataset, ".dot");
-
-  // const cx = (d) => xScale(d.Year) + svgMargin.left;
-  // const cy = (d) => yScale(d.Time) + svgMargin.top;
-  // setCircle(dot, 6, cx, cy);
-
-  // setAttrCircle(dot, ["class", "dot"], ["fill", (d) => color(d.Doping !== "")]);
-
-  // // Set FCC User Story
-  // setAttrCircle(
-  //   dot,
-  //   ["data-xvalue", (d) => d.Year],
-  //   ["data-yvalue", (d) => d.Time.toISOString()]
-  // );
-
-  // // Tooltip Hover
-  // const tooltip = addDiv(app, "tooltip", "tooltip");
-  // tooltip.style("opacity", 0);
+    .attr("data-month", (d) => d.month)
+    .attr("data-year", (d) => d.year)
+    .attr("data-temp", (d) => d.temperature);
 
   // dot
   //   .on("mouseover", (e, d) => {

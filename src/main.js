@@ -60,9 +60,9 @@ async function main() {
    */
   const svgMargin = {
     y: 30,
-    x: 80,
+    x: 100,
   };
-  const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
+  const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12);
   const svgHeight = svgMargin.y * 16;
   const svg = addSvg(app, svgWidth, svgHeight);
 

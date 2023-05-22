@@ -4,7 +4,7 @@ import { formatMonth } from "../modules/utils";
 function createAxis(type, scale, tickFormat = undefined) {
   let axis;
 
-  switch (type.toLowerCase()) {
+  switch (type) {
     case "x":
       axis = axisBottom().scale(scale);
       axis.type = "x";
@@ -17,7 +17,7 @@ function createAxis(type, scale, tickFormat = undefined) {
       throw new Error("Invalid Axis Type!");
   }
 
-  switch (tickFormat.toLowerCase()) {
+  switch (tickFormat) {
     case undefined:
       break;
     case "d":

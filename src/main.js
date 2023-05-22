@@ -1,7 +1,7 @@
 import "./style.css";
 import { min, max, select } from "d3";
 import { getGlobalTemperature } from "./modules/data";
-import { linearScale, thresholdScale } from "./modules/scale";
+import { bandScale, linearScale, thresholdScale } from "./modules/scale";
 import { addSvg } from "./components/svg";
 import { addText } from "./components/text";
 import { addAxis, createAxis } from "./components/axis";
@@ -34,8 +34,7 @@ async function main() {
 
   const xMin = min(monthlyVariance, (d) => d.year - 1);
   const xMax = max(monthlyVariance, (d) => d.year + 1);
-  const yMin = min(monthlyVariance, (d) => d.month);
-  const yMax = max(monthlyVariance, (d) => d.month);
+  const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   /**
    * INITIAL SELECTION
@@ -64,19 +63,31 @@ async function main() {
     x: 80,
   };
   const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
-  const svgHeight = svgMargin.y * 14;
+  const svgHeight = svgMargin.y * 16;
   const svg = addSvg(app, svgWidth, svgHeight);
 
   /**
    * SCALE
    */
-  const xScale = linearScale(xMin, xMax, 0, svgWidth - svgMargin.x * 2);
-  const xAxis = createAxis("x", xScale, "d");
-  addAxis(svg, xAxis, svgMargin.x, svgHeight - svgMargin.y);
+  const scaleMargin = {
+    top: svgMargin.y,
+    x: svgMargin.x,
+    bottom: svgHeight - svgMargin.y * 4,
+  };
+  const scale = {
+    width: svgWidth - scaleMargin.bottom,
+    height: scaleMargin.bottom - scaleMargin.top,
+  };
 
-  const yScale = linearScale(yMin, yMax, 0, svgHeight - svgMargin.y * 2);
+  const xScale = linearScale(xMin, xMax, 0, scale.width);
+  const xAxis = createAxis("x", xScale, "d");
+  addAxis(svg, xAxis, scaleMargin.x, scaleMargin.bottom);
+
+  const yScale = bandScale(months, 0, scale.height);
   const yAxis = createAxis("y", yScale, "month");
-  addAxis(svg, yAxis, svgMargin.x, svgMargin.y);
+  yAxis.tickSize(10, 1).tickValues(yScale.domain());
+  addAxis(svg, yAxis, scaleMargin.x, scaleMargin.top);
+
   // Add Y Axis label
   addText(svg, "text", "Bulan", "yText");
 

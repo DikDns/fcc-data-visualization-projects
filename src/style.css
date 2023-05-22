@@ -55,15 +55,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.dot,
-.legend-rect {
-  stroke: #eff6ff;
-}
-
-.legend-label {
-  fill: rgba(255, 255, 255, 0.87);
-}
-
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -78,6 +69,14 @@ button:focus-visible {
 #subtitle {
   font-size: 1.5em;
   margin: 0 0 20px;
+}
+
+#legend {
+  transform: translate(20px, 400px);
+}
+
+.legend-label {
+  stroke: #eff6ff;
 }
 
 #yText {
@@ -98,36 +97,4 @@ button:focus-visible {
   border: 0px;
   border-radius: 4px;
   pointer-events: none;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-
-  .dot,
-  .legend-rect {
-    stroke: #172554;
-  }
-
-  #tooltip {
-    color: #213547;
-    background: #eff6ff;
-    box-shadow: 1px 1px 5px 0px #eff6ff;
-    border: 0px;
-    border-radius: 4px;
-    pointer-events: none;
-  }
-
-  #yText,
-  .legend-label {
-    fill: #213547;
-  }
 }

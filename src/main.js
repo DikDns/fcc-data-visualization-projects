@@ -4,9 +4,8 @@ import { getGlobalTemperature } from "./modules/data";
 import { linearScale, thresholdScale } from "./modules/scale";
 import { addSvg } from "./components/svg";
 import { addText } from "./components/text";
-import { addAxis, createAxis, timeFormat } from "./components/axis";
-import { addDiv } from "./components/div";
-import { addCircle, setCircle, setAttrCircle } from "./components/circle";
+import { addAxis, createAxis } from "./components/axis";
+import { addLegend, setDataLegend } from "./components/legend";
 
 async function main() {
   /**
@@ -96,40 +95,20 @@ async function main() {
   /**
    * LEGEND SVG
    */
-  const legendContainer = svg.append("g").attr("id", "legend");
+  const legend = addLegend(svg, legendHeight);
+  const legendData = setDataLegend(legendThreshold, legendXScale);
 
-  const legendData = legendThreshold.range().map((color) => {
-    const d = legendThreshold.invertExtent(color);
-    if (d[0] === null) {
-      d[0] = legendXScale.domain()[0];
-    }
-    if (d[1] === null) {
-      d[1] = legendXScale.domain()[1];
-    }
-    return d;
-  });
-
-  const legend = legendContainer
-    .selectAll("#legend")
-    .data(legendData)
-    .enter()
-    .append("rect")
-    .style("fill", (d) => legendThreshold(d[0]))
-    .attr("x", (d) => legendXScale(d[0]))
-    .attr("y", 0)
-    .attr("width", (d, i) => {
-      const fixedWidth = legendXScale(d[1]) - legendXScale(d[0]);
-      return d[0] && d[1] ? fixedWidth : legendXScale(null);
-    })
-    .attr("height", legendHeight)
-    .attr("class", "legend-label");
+  /**
+   * LEGEND RECT
+   */
+  legend.addRect(legendData, legendThreshold, legendXScale);
 
   /**
    * LEGEND X AXIS
    */
   const legendXAxis = createAxis("x", legendXScale, ".1f");
   legendXAxis.tickValues(legendThreshold.domain());
-  addAxis(legendContainer, legendXAxis, 0, legendHeight);
+  addAxis(legend, legendXAxis, 0, legendHeight);
 
   // legend
   //   .append("rect")

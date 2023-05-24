@@ -10,7 +10,10 @@ export async function getSekolah() {
   const data = await getFetch(SEKOLAH);
   return data.map((d) => ({
     ...d,
-    persentaseKesenjangan: round(d.jumlahMuridSMA / d.jumlahGuruSMA - 1, 100),
+    persentaseKesenjangan: {
+      SMANegeri: round(d.jumlahMuridSMANegeri / d.jumlahGuruSMANegeri - 1, 100),
+      SMASwasta: round(d.jumlahMuridSMASwasta / d.jumlahGuruSMASwasta - 1, 100),
+    },
   }));
 }
 

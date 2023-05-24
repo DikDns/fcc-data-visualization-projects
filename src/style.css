@@ -107,3 +107,13 @@ button:focus-visible {
   pointer-events: none;
   min-width: 100px;
 }
+
+.provinces {
+  fill: none;
+}
+
+.states-border {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}

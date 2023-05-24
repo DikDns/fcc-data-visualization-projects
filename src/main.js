@@ -1,51 +1,101 @@
 import "./style.css";
-import { min, max, select, format } from "d3";
-import { getGlobalTemperature } from "./modules/data";
+import { min, max, select, format, geoPath, geoEquirectangular } from "d3";
+import * as topojson from "topojson-client";
+import { getSekolah, getProvinsi } from "./modules/data";
+import { thresholdScale } from "./modules/scale";
+import { addText } from "./components/text";
+
+/**
+ * COLOR
+ */
+const color = [
+  "#fecaca",
+  "#fca5a5",
+  "#f87171",
+  "#ef4444",
+  "#dc2626",
+  "#b91c1c",
+  "#991b1b",
+  "#7f1d1d",
+  "#450a0a",
+];
 
 async function main() {
-  // /**
-  //  * COLOR
-  //  */
-  // const color = [
-  //   "#223D52",
-  //   "#386385",
-  //   "#71AAB8",
-  //   "#A9E8DC",
-  //   "#FEF7CF",
-  //   "#FFD6A9",
-  //   "#FF9A76",
-  //   "#F55247",
-  //   "#E11D48",
-  //   "#94132F",
-  //   "#610D1F",
-  // ];
-  // /**
-  //  * DATASET
-  //  */
-  // const dataset = await getGlobalTemperature();
-  // const { monthlyVariance } = dataset;
-  // const years = monthlyVariance.map((val) => val.year);
-  // const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  // /**
-  //  * INITIAL SELECTION
-  //  */
-  // const app = select("#app");
-  // addText(app, "h1", "Suhu Permukaan Tanah Global Bulanan", "title");
-  // addText(app, "h2", "1753 - 2015: suhu dasar 8,66℃", "description");
-  // /**
-  //  * SVG GRAPH
-  //  */
-  // const svgMargin = {
-  //   y: 30,
-  //   x: 100,
-  // };
-  // const svgWidth = 5 * Math.ceil(monthlyVariance.length / 12) + svgMargin.x * 2;
-  // const svgHeight = svgMargin.y * 16;
-  // const svgWrapper = addDiv(app, "graph-container");
-  // const svg = addSvg(svgWrapper, svgWidth, svgHeight);
-  // /**
-  //  * SCALE
-  //  */
+  /**
+   * DATASET
+   */
+  const sekolahData = await getSekolah();
+  const minKesenjangan = min(
+    sekolahData,
+    (d) => d.persentaseKesenjangan.SMANegeri
+  );
+  const maxKesenjangan = max(
+    sekolahData,
+    (d) => d.persentaseKesenjangan.SMANegeri
+  );
+
+  /**
+   * SVG GRAPH
+   */
+  const width = 960;
+  const height = 600;
+  const svg = select("#map").attr("width", width).attr("height", height);
+
+  const indonesia = await getProvinsi();
+
+  const featuresIndonesia = topojson.feature(
+    indonesia,
+    indonesia.objects.provinces
+  ).features;
+
+  const projection = geoEquirectangular()
+    .scale(1180)
+    .rotate([-120, 0])
+    .translate([width / 2 + 40, height / 2]);
+  const path = geoPath().projection(projection);
+
+  /*
+   * INITIAL SELECTION
+   */
+  const app = select("#app");
+
+  /**
+   * SCALE
+   */
+
+  const colorScale = thresholdScale(minKesenjangan, maxKesenjangan, color);
+
+  svg
+    .append("g")
+    .attr("class", "provinces")
+    .selectAll("path")
+    .data(featuresIndonesia)
+    .enter()
+    .append("path")
+    .attr("class", "province")
+    .attr("data-provinsi", ({ properties: props }) => props.provinsi)
+    .attr("data-sma-negeri-kesenjangan", ({ properties: props }) => {
+      const result = sekolahData.filter((x) => x.provinsi === props.provinsi);
+      if (!result[0]) return 0;
+      return result[0].persentaseKesenjangan.SMANegeri;
+    })
+    .attr("fill", ({ properties: props }) => {
+      const result = sekolahData.filter((x) => x.provinsi === props.provinsi);
+      if (!result[0]) return colorScale(0);
+      return colorScale(result[0].persentaseKesenjangan.SMANegeri);
+    })
+    .attr("d", path);
+
+  svg
+    .append("path")
+    .datum(
+      topojson.mesh(indonesia, indonesia.objects.provinces, function (a, b) {
+        return a !== b;
+      })
+    )
+    .attr("class", "states-border")
+    .attr("d", path);
+
   // const scaleMargin = {
   //   top: svgMargin.y * 2,
   //   x: svgMargin.x,

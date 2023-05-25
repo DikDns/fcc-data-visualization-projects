@@ -1,5 +1,5 @@
 function addRect(data, threshold, scale) {
-  return this.selectAll("#legend")
+  return this.selectAll("rect")
     .data(data)
     .enter()
     .append("rect")

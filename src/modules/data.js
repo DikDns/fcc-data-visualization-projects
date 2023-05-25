@@ -3,7 +3,7 @@ import { round } from "./utils.js";
 
 const SEKOLAH =
   "https://raw.githubusercontent.com/DikDns/personal-project-data/main/fcc-choropleth-map/sekolah.json";
-const PROVINSI =
+const INDONESIA =
   "https://raw.githubusercontent.com/DikDns/personal-project-data/main/fcc-choropleth-map/provinces-simplified-topo.json";
 
 export async function getSekolah() {
@@ -17,7 +17,7 @@ export async function getSekolah() {
   }));
 }
 
-export async function getProvinsi() {
-  const data = await getFetch(PROVINSI);
+export async function getIndonesia() {
+  const data = await getFetch(INDONESIA);
   return data;
 }

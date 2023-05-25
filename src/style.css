@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #0a0a0a;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -107,9 +107,9 @@ button:focus-visible {
   text-align: left;
   padding: 5px;
   font: 12px sans-serif;
-  color: #eff6ff;
-  background: #172554dd;
-  box-shadow: 1px 1px 5px 0px #172554;
+  color: #fef2f2;
+  background: #171717dd;
+  box-shadow: 1px 1px 5px 0px #171717;
   border: 0px;
   border-radius: 4px;
   pointer-events: none;

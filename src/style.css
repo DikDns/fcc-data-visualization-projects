@@ -79,14 +79,6 @@ button:focus-visible {
   stroke: black;
 }
 
-#legend {
-  transform: translate(80px, 430px);
-}
-
-.legend-label {
-  stroke: #eff6ff;
-}
-
 #yText {
   fill: rgba(255, 255, 255, 0.87);
   font-size: 20px;
@@ -116,4 +108,17 @@ button:focus-visible {
   fill: none;
   stroke: #fff;
   stroke-linejoin: round;
+}
+
+/* Legend */
+#legend {
+  transform: translate(0px, 100px);
+}
+
+#legend #x-axis {
+  transform: translate(0px, 8px);
+}
+
+.legend-label {
+  stroke: #eff6ff;
 }

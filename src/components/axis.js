@@ -39,12 +39,11 @@ function createAxis(type, scale, tickFormat = undefined) {
   return axis;
 }
 
-function addAxis(d3Obj, axis, offsetX = 0, offsetY = 0) {
+function addAxis(d3Obj, axis) {
   return d3Obj
     .append("g")
     .call(axis)
-    .attr("id", `${axis.type.toLowerCase()}-axis`)
-    .attr("transform", `translate(${offsetX}, ${offsetY})`);
+    .attr("id", `${axis.type.toLowerCase()}-axis`);
 }
 
 export { createAxis, addAxis, timeFormat };

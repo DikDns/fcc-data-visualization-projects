@@ -71,20 +71,36 @@ button:focus-visible {
   margin: 0 0 20px;
 }
 
-#graph-container {
-  overflow: auto;
+/* PROVINCES */
+.provinces {
+  fill: none;
 }
 
-.cell:hover {
-  stroke: black;
+.states-border {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
 }
 
-#yText {
-  fill: rgba(255, 255, 255, 0.87);
-  font-size: 20px;
-  font-family: inherit;
-  transform: translate(30px, 210px) rotate(-90deg);
+.province:hover {
+  stroke: #fffbeb;
+  stroke-width: 2px;
 }
+
+/* LEGEND */
+#legend {
+  transform: translate(0px, 100px);
+}
+
+#legend #x-axis {
+  transform: translate(0px, 8px);
+}
+
+.legend-label {
+  stroke: #eff6ff;
+}
+
+/* TOOLTIP */
 
 #tooltip {
   position: absolute;
@@ -98,27 +114,4 @@ button:focus-visible {
   border-radius: 4px;
   pointer-events: none;
   min-width: 100px;
-}
-
-.provinces {
-  fill: none;
-}
-
-.states-border {
-  fill: none;
-  stroke: #fff;
-  stroke-linejoin: round;
-}
-
-/* Legend */
-#legend {
-  transform: translate(0px, 100px);
-}
-
-#legend #x-axis {
-  transform: translate(0px, 8px);
-}
-
-.legend-label {
-  stroke: #eff6ff;
 }

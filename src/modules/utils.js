@@ -1,6 +1,12 @@
+import { format } from "d3";
+
 export function round(x, nth = 1) {
   if (nth < 1) return 0;
   return Math.round(x * nth) / nth;
+}
+
+export function dotFormat(num) {
+  return format(",")(num).replace(/,/g, ".");
 }
 
 export function formatMonth(month = 0) {

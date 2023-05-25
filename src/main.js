@@ -1,10 +1,12 @@
 import "./style.css";
 import { min, max, select, geoPath, geoEquirectangular } from "d3";
 import * as topojson from "topojson-client";
+import { dotFormat } from "./modules/utils";
 import { getSekolah, getIndonesia } from "./modules/data";
 import { linearScale, thresholdScale } from "./modules/scale";
 import { createAxis, addAxis } from "./components/axis";
 import { addLegend, setDataLegend } from "./components/legend";
+import { addDiv } from "./components/div";
 
 /**
  * COLOR
@@ -67,7 +69,7 @@ async function main() {
   const path = geoPath().projection(projection);
 
   // Rendering map
-  svg
+  const provinces = svg
     .append("g")
     .attr("class", "provinces")
     .selectAll("path")
@@ -88,7 +90,7 @@ async function main() {
     })
     .attr("d", path);
 
-  // Rendering the border between provincies
+  // Rendering the border between provinces
   svg
     .append("path")
     .datum(
@@ -118,32 +120,55 @@ async function main() {
   legendXAxis.tickValues(colorScale.domain());
   addAxis(legend, legendXAxis);
 
-  // tooltip Mouse Hover
-  // const tooltip = addDiv(svgWrapper, "tooltip");
-  // tooltip.style("opacity", 0);
-  // heatMap
-  //   .on("mouseover", (e, d) => {
-  //     const innerHtml = `
-  //       <span class="date">
-  //         ${d.year} - ${formatMonth(d.month)}
-  //       </span>
-  //       <br />
-  //       <span class="temperature">
-  //         ${format(".1f")(d.temperature)}&#8451;
-  //       </span>
-  //       <br />
-  //       <span class="variance">
-  //         ${format("+.1f")(d.variance)}&#8451;
-  //       </span>
-  //     `;
-  //     tooltip.html(innerHtml);
-  //     tooltip.style("opacity", 1);
-  //     tooltip.style("left", e.pageX + "px").style("top", e.pageY - 75 + "px");
-  //     tooltip.attr("data-year", d.year);
-  //   })
-  //   .on("mouseout", (e, d) => {
-  //     tooltip.style("opacity", 0);
-  //   });
+  /**
+   * TOOLTIP MOUSE HOVER
+   */
+  const app = select("#app");
+  const tooltip = addDiv(app, "tooltip");
+  tooltip.style("opacity", 0);
+  provinces
+    .on("mouseover", (e, { properties: props }) => {
+      const result = sekolahData.filter((x) => x.provinsi === props.provinsi);
+      const {
+        provinsi,
+        persentaseKesenjangan,
+        jumlahGuruSMANegeri,
+        jumlahMuridSMANegeri,
+      } = result[0];
+      const innerHtml = `
+        <span class="tooltip-title" data-provinsi="${provinsi}">
+          ${provinsi}
+        </span>
+        <hr/>
+        <span 
+          class="tooltip-description" 
+          data-sma-negeri-kesenjangan="${persentaseKesenjangan.SMANegeri}"
+        >
+          Persentase Kesenjangan: ${persentaseKesenjangan.SMANegeri}%
+        </span>
+        <br/>
+        <span class="tooltip-description"  >
+          Setiap 1 guru mendidik ${Math.round(
+            persentaseKesenjangan.SMANegeri
+          )} murid
+        </span>
+        <br/>
+        <span class="tooltip-description"  >
+         Terdapat 
+         ${dotFormat(jumlahGuruSMANegeri)} 
+         guru dan 
+         ${dotFormat(jumlahMuridSMANegeri)} 
+         murid
+        </span>
+      
+      `;
+      tooltip.html(innerHtml);
+      tooltip.style("opacity", 1);
+      tooltip.style("left", e.pageX + "px").style("top", e.pageY - 75 + "px");
+    })
+    .on("mouseout", (e, d) => {
+      tooltip.style("opacity", 0);
+    });
 }
 
 try {

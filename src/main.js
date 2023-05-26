@@ -24,13 +24,16 @@ async function main() {
    */
   const width = 960;
   const height = 600;
-  const svg = d3.select("svg").attr("width", width).attr("height", height);
+  const treemap = d3
+    .select("#tree-map")
+    .attr("width", width)
+    .attr("height", height);
 
   /**
    * Treemap
    */
   const treemapData = createTreemap(dataset, width, height);
-  const cell = appendTreemap(svg, treemapData, color);
+  const cell = appendTreemap(treemap, treemapData, color);
 
   /**
    * Tooltip
@@ -55,6 +58,15 @@ async function main() {
     .on("mouseout", (e, d) => {
       tooltip.style("opacity", 0);
     });
+
+  /**
+   * Legend
+   */
+
+  const categories = treemapData
+    .leaves()
+    .map((nodes) => nodes.data.category)
+    .filter((category, index, self) => self.indexOf(category) === index);
 }
 
 try {

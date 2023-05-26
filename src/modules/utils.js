@@ -37,7 +37,3 @@ export function formatMonth(month = 0) {
       return "Desember";
   }
 }
-
-export function sumBySize(d) {
-  return d.value;
-}

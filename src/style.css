@@ -71,34 +71,12 @@ button:focus-visible {
   margin: 0 0 20px;
 }
 
-/* PROVINCES */
-.provinces {
-  fill: none;
-}
-
-.states-border {
-  fill: none;
-  stroke: #fff;
-  stroke-linejoin: round;
-}
-
-.province:hover {
-  stroke: #fffbeb;
-  stroke-width: 2px;
+/* TILE */
+.tile {
+  fill-opacity: 0.75;
 }
 
 /* LEGEND */
-#legend {
-  transform: translate(0px, 100px);
-}
-
-#legend #x-axis {
-  transform: translate(0px, 8px);
-}
-
-.legend-label {
-  stroke: #eff6ff;
-}
 
 /* TOOLTIP */
 

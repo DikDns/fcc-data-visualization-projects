@@ -92,7 +92,7 @@ svg:not(:root) {
 }
 /* TILE */
 .tile {
-  fill-opacity: 0.75;
+  fill-opacity: 0.5;
 }
 
 .tile-text {

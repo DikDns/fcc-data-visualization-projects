@@ -1,4 +1,4 @@
-function addDiv(d3Obj, id, classes) {
+export function appendDiv(d3Obj, id, classes) {
   const div = d3Obj.append("div");
   if (id) {
     div.attr("id", id);
@@ -8,5 +8,3 @@ function addDiv(d3Obj, id, classes) {
   }
   return div;
 }
-
-export { addDiv };

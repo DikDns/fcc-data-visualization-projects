@@ -96,6 +96,7 @@ svg:not(:root) {
 }
 
 .tile-text {
+  cursor: default;
   display: block;
   white-space: wrap;
 }

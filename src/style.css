@@ -102,6 +102,17 @@ svg:not(:root) {
 }
 
 /* LEGEND */
+#legend {
+  display: flex;
+}
+
+#legend g {
+  display: block;
+}
+
+.legend-item {
+  fill-opacity: 0.75;
+}
 
 /* TOOLTIP */
 

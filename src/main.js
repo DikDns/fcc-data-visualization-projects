@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import { getSalesData, colorScheme20 } from "./modules/data";
 import { ordinalScale } from "./modules/scale";
 import { createTreemap, appendTreemap } from "./components/treemap";
-import { addDiv } from "./components/div";
-// import { addLegend, setDataLegend } from "./components/legend";
+import { appendDiv } from "./components/div";
+import { appendLegend } from "./components/legend";
 
 async function main() {
   const app = d3.select("#app");
@@ -38,10 +38,11 @@ async function main() {
   /**
    * Tooltip
    */
-  const tooltip = addDiv(app, "tooltip");
+  const tooltip = appendDiv(app, "tooltip");
   tooltip.style("opacity", 0);
   cell
     .on("mousemove", (e, { data }) => {
+      tooltip.attr("data-value", data.value);
       const innerHtml = `
         <span>Judul: ${data.name}</span>
         <br/>
@@ -62,11 +63,14 @@ async function main() {
   /**
    * Legend
    */
-
   const categories = treemapData
     .leaves()
     .map((nodes) => nodes.data.category)
     .filter((category, index, self) => self.indexOf(category) === index);
+
+  const legendWidth = 600;
+  const legendContainer = d3.select("#legend").attr("width", legendWidth);
+  appendLegend(legendContainer, categories, legendWidth, color);
 }
 
 try {

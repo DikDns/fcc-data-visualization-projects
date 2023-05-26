@@ -1,4 +1,10 @@
-import { scaleLinear, scaleTime, scaleThreshold, scaleBand } from "d3";
+import {
+  scaleLinear,
+  scaleTime,
+  scaleThreshold,
+  scaleBand,
+  scaleOrdinal,
+} from "d3";
 
 export function bandScale(domain, minRange, maxRange) {
   return scaleBand().domain(domain).rangeRound([minRange, maxRange]).padding(0);
@@ -24,4 +30,8 @@ export function thresholdScale(minDomain, maxDomain, inputRange) {
   }
 
   return scaleThreshold().domain(domainArr).range(inputRange);
+}
+
+export function ordinalScale(inputRange) {
+  return scaleOrdinal().range(inputRange);
 }

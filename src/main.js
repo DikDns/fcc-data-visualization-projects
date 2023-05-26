@@ -1,8 +1,8 @@
 import "./style.css";
 import * as d3 from "d3";
-// import { dotFormat } from "./modules/utils";
-import { getSalesData } from "./modules/data";
-// import { linearScale, thresholdScale } from "./modules/scale";
+import { getSalesData, colorScheme20 } from "./modules/data";
+import { ordinalScale } from "./modules/scale";
+import { sumBySize } from "./modules/utils";
 // import { createAxis, addAxis } from "./components/axis";
 // import { addLegend, setDataLegend } from "./components/legend";
 // import { addDiv } from "./components/div";
@@ -13,7 +13,10 @@ async function main() {
    */
   const dataset = await getSalesData();
 
-  console.log(dataset);
+  /**
+   * Color
+   */
+  const color = ordinalScale(colorScheme20);
 
   /**
    * SVG INIT
@@ -63,7 +66,7 @@ async function main() {
     .attr("data-name", (d) => d.data.name)
     .attr("data-category", (d) => d.data.category)
     .attr("data-value", (d) => d.data.value)
-    .attr("fill", (d) => "#ababab");
+    .attr("fill", (d) => color(d.data.category));
 
   // const tooltip = addDiv(app, "tooltip");
   // tooltip.style("opacity", 0);
@@ -77,10 +80,6 @@ async function main() {
   //   .on("mouseout", (e, d) => {
   //     tooltip.style("opacity", 0);
   //   });
-}
-
-function sumBySize(d) {
-  return d.value;
 }
 
 try {

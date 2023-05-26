@@ -2,12 +2,13 @@ import "./style.css";
 import * as d3 from "d3";
 import { getSalesData, colorScheme20 } from "./modules/data";
 import { ordinalScale } from "./modules/scale";
-import { sumBySize } from "./modules/utils";
-// import { createAxis, addAxis } from "./components/axis";
+import { createTreemap, appendTreemap } from "./components/treemap";
+import { addDiv } from "./components/div";
 // import { addLegend, setDataLegend } from "./components/legend";
-// import { addDiv } from "./components/div";
 
 async function main() {
+  const app = d3.select("#app");
+
   /**
    * DATASET
    */
@@ -28,58 +29,32 @@ async function main() {
   /**
    * Treemap
    */
-
-  const hierarchyRoot = d3
-    .hierarchy(dataset)
-    .eachBefore((d) => {
-      d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name;
-    })
-    .sum(sumBySize)
-    .sort((a, b) => b.height - a.height || b.value - a.value);
-
-  const treemap = d3.treemap().size([width, height]).paddingInner(1);
-
-  treemap(hierarchyRoot);
+  const treemapData = createTreemap(dataset, width, height);
+  const cell = appendTreemap(svg, treemapData, color);
 
   /**
-   *  Group of Cell Treemap
+   * Tooltip
    */
-
-  const cell = svg
-    .selectAll("g")
-    .data(hierarchyRoot.leaves())
-    .enter()
-    .append("g")
-    .attr("class", "group")
-    .attr("transform", (d) => `translate(${d.x0},${d.y0})`);
-
-  /**
-   * Cell Treemap
-   */
-
+  const tooltip = addDiv(app, "tooltip");
+  tooltip.style("opacity", 0);
   cell
-    .append("rect")
-    .attr("class", "tile")
-    .attr("id", (d) => d.data.id)
-    .attr("width", (d) => d.x1 - d.x0)
-    .attr("height", (d) => d.y1 - d.y0)
-    .attr("data-name", (d) => d.data.name)
-    .attr("data-category", (d) => d.data.category)
-    .attr("data-value", (d) => d.data.value)
-    .attr("fill", (d) => color(d.data.category));
-
-  // const tooltip = addDiv(app, "tooltip");
-  // tooltip.style("opacity", 0);
-  // provinces
-  //   .on("mouseover", (e, d) => {
-  //     const innerHtml = ``;
-  //     tooltip.html(innerHtml);
-  //     tooltip.style("opacity", 1);
-  //     tooltip.style("left", e.pageX + "px").style("top", e.pageY - 75 + "px");
-  //   })
-  //   .on("mouseout", (e, d) => {
-  //     tooltip.style("opacity", 0);
-  //   });
+    .on("mousemove", (e, { data }) => {
+      const innerHtml = `
+        <span>Judul: ${data.name}</span>
+        <br/>
+        <span>Platform: ${data.category}</span>
+        <br/>
+        <span>Penjualan: ${data.value} juta</span>
+      `;
+      tooltip.html(innerHtml);
+      tooltip.style("opacity", 1);
+      tooltip
+        .style("left", e.pageX + 15 + "px")
+        .style("top", e.pageY - 25 + "px");
+    })
+    .on("mouseout", (e, d) => {
+      tooltip.style("opacity", 0);
+    });
 }
 
 try {

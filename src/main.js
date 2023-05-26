@@ -1,53 +1,70 @@
 import "./style.css";
 import * as d3 from "d3";
 // import { dotFormat } from "./modules/utils";
-// import { getSekolah, getIndonesia } from "./modules/data";
+import { getSalesData } from "./modules/data";
 // import { linearScale, thresholdScale } from "./modules/scale";
 // import { createAxis, addAxis } from "./components/axis";
 // import { addLegend, setDataLegend } from "./components/legend";
 // import { addDiv } from "./components/div";
 
-/**
- * COLOR
- */
-const color = [
-  "#fecaca",
-  "#fca5a5",
-  "#f87171",
-  "#ef4444",
-  "#dc2626",
-  "#b91c1c",
-  "#991b1b",
-  "#7f1d1d",
-  "#450a0a",
-];
-
 async function main() {
   /**
    * DATASET
    */
+  const dataset = await getSalesData();
+
+  console.log(dataset);
 
   /**
    * SVG INIT
    */
   const width = 960;
   const height = 600;
-  // const svg = select("#map").attr("width", width).attr("height", height);
+  const svg = d3.select("svg").attr("width", width).attr("height", height);
 
   /**
-   * SCALE
+   * Treemap
    */
+
+  const hierarchyRoot = d3
+    .hierarchy(dataset)
+    .eachBefore((d) => {
+      d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name;
+    })
+    .sum(sumBySize)
+    .sort((a, b) => b.height - a.height || b.value - a.value);
+
+  const treemap = d3.treemap().size([width, height]).paddingInner(1);
+
+  treemap(hierarchyRoot);
 
   /**
-   * INDONESIA MAP
+   *  Group of Cell Treemap
    */
 
-  // Initial data map
+  const cell = svg
+    .selectAll("g")
+    .data(hierarchyRoot.leaves())
+    .enter()
+    .append("g")
+    .attr("class", "group")
+    .attr("transform", (d) => `translate(${d.x0},${d.y0})`);
 
   /**
-   * TOOLTIP MOUSE HOVER
+   * Cell Treemap
    */
-  // const app = select("#app");
+
+  cell
+    .append("rect")
+    .attr("class", "tile")
+    .attr("id", (d) => d.data.id)
+    .attr("width", (d) => d.x1 - d.x0)
+    .attr("height", (d) => d.y1 - d.y0)
+    .attr("data-name", (d) => d.data.name)
+    .attr("data-category", (d) => d.data.category)
+    .attr("data-value", (d) => d.data.value)
+    .attr("fill", (d) => "#ababab");
+
   // const tooltip = addDiv(app, "tooltip");
   // tooltip.style("opacity", 0);
   // provinces
@@ -60,6 +77,10 @@ async function main() {
   //   .on("mouseout", (e, d) => {
   //     tooltip.style("opacity", 0);
   //   });
+}
+
+function sumBySize(d) {
+  return d.value;
 }
 
 try {

@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: #f8fafc;
   background-color: #0a0a0a;
 
   font-synthesis: none;
@@ -71,9 +71,33 @@ button:focus-visible {
   margin: 0 0 20px;
 }
 
+/* SVG */
+svg {
+  font: 10px sans-serif;
+  fill: #f8fafc;
+  text-align: center;
+  display: block;
+  margin: auto;
+}
+
+svg:not(:root) {
+  overflow-clip-margin: content-box;
+  overflow: hidden;
+}
+
+/* GROUP TILE */
+.group {
+  overflow-clip-margin: content-box;
+  overflow: hidden;
+}
 /* TILE */
 .tile {
   fill-opacity: 0.75;
+}
+
+.tile-text {
+  display: block;
+  white-space: wrap;
 }
 
 /* LEGEND */
@@ -85,11 +109,11 @@ button:focus-visible {
   text-align: left;
   padding: 5px;
   font: 12px sans-serif;
-  color: #fef2f2;
-  background: #171717dd;
+  color: #f8fafc;
+  background: #171717;
   box-shadow: 1px 1px 5px 0px #171717;
-  border: 0px;
-  border-radius: 4px;
+  border: solid 1px #f8fafc;
+  border-radius: 3px;
   pointer-events: none;
   min-width: 100px;
 }

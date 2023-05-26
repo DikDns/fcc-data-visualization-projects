@@ -1,36 +1,42 @@
-function addRect(data, threshold, scale) {
-  return this.selectAll("rect")
-    .data(data)
+const LEGEND_OFFSET = 25;
+const LEGEND_RECT_SIZE = 15;
+const LEGEND_H_SPACING = 150;
+const LEGEND_V_SPACING = 10;
+const LEGEND_TEXT_X_OFFSET = 3;
+const LEGEND_TEXT_Y_OFFSET = -2;
+
+export function appendLegend(d3Obj, dataset, width, color) {
+  const legendElemsPerRow = Math.floor(width / LEGEND_H_SPACING);
+  const legend = d3Obj
+    .append("g")
+    .attr("transform", "translate(60," + LEGEND_OFFSET + ")")
+    .selectAll("g")
+    .data(dataset)
     .enter()
+    .append("g")
+    .attr(
+      "transform",
+      (d, i) =>
+        "translate(" +
+        (i % legendElemsPerRow) * LEGEND_H_SPACING +
+        "," +
+        (Math.floor(i / legendElemsPerRow) * LEGEND_RECT_SIZE +
+          LEGEND_V_SPACING * Math.floor(i / legendElemsPerRow)) +
+        ")"
+    );
+
+  legend
     .append("rect")
-    .style("fill", (d) => threshold(d[0]))
-    .attr("x", (d) => scale(d[0]))
-    .attr("y", 0)
-    .attr("width", (d, i) => {
-      const fixedWidth = scale(d[1]) - scale(d[0]);
-      return d[0] && d[1] ? fixedWidth : scale(null);
-    })
-    .attr("height", this.height)
-    .attr("class", "legend-label");
-}
+    .attr("width", LEGEND_RECT_SIZE)
+    .attr("height", LEGEND_RECT_SIZE)
+    .attr("class", "legend-item")
+    .attr("fill", (d) => color(d));
 
-export function addLegend(d3Obj, height) {
-  const legend = d3Obj.append("g").attr("id", "legend");
-  legend.addRect = addRect;
-  legend.height = height;
+  legend
+    .append("text")
+    .attr("x", LEGEND_RECT_SIZE + LEGEND_TEXT_X_OFFSET)
+    .attr("y", LEGEND_RECT_SIZE + LEGEND_TEXT_Y_OFFSET)
+    .text((d) => d);
+
   return legend;
-}
-
-export function setDataLegend(legendThreshold, legendScale) {
-  return legendThreshold.range().map((color) => {
-    const d = legendThreshold.invertExtent(color);
-    // Set the limit of each x axis
-    if (d[0] === null) {
-      d[0] = legendScale.domain()[0];
-    }
-    if (d[1] === null) {
-      d[1] = legendScale.domain()[1];
-    }
-    return d;
-  });
 }

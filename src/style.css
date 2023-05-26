@@ -90,6 +90,12 @@ svg:not(:root) {
   overflow-clip-margin: content-box;
   overflow: hidden;
 }
+
+.group:hover {
+  stroke: #f8fafc;
+  stroke-width: 1px;
+}
+
 /* TILE */
 .tile {
   fill-opacity: 0.5;
